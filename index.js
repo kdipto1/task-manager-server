@@ -20,7 +20,7 @@ async function run() {
   try {
     await client.connect();
     const taskCollection = client.db("scTask").collection("tasks");
-    const completedTaskCollection = client.db("scTask").collection("completed")
+    const completedTaskCollection = client.db("scTask").collection("completed");
 
     //post task
     app.post("/tasks", async (req, res) => {
@@ -51,19 +51,15 @@ async function run() {
       const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
       const updateDoc = { $set: { task: data.task } };
-      const result = await taskCollection.updateOne(
-        filter,
-        updateDoc,
-        options
-      );
+      const result = await taskCollection.updateOne(filter, updateDoc, options);
       res.send(result);
     });
-     app.delete("/task/:id", async (req, res) => {
-       const id = req.params.id;
-       const query = { _id: ObjectId(id) };
-       const result = await taskCollection.deleteOne(query);
-       res.send(result);
-     });
+    app.delete("/task/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await taskCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
   }
 }
